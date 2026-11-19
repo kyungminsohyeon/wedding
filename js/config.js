@@ -18,8 +18,8 @@ const WEDDING_CONFIG = {
       alive: true
     },
     account: {
-      bank: "국민은행",
-      number: "123-456789-01-012",
+      bank: "새마을금고",
+      number: "9003313544218",
       holder: "진경민"
     },
     parentAccounts: [
@@ -29,13 +29,6 @@ const WEDDING_CONFIG = {
         bank: "신한은행",
         number: "110-123-456789",
         holder: "진구영"
-      },
-      {
-        relation: "어머니",
-        name: "이현실",
-        bank: "우리은행",
-        number: "1002-123-456789",
-        holder: "이현실"
       }
     ]
   },
@@ -65,13 +58,6 @@ const WEDDING_CONFIG = {
         bank: "하나은행",
         number: "220-987-654321",
         holder: "박노재"
-      },
-      {
-        relation: "어머니",
-        name: "이혜원",
-        bank: "농협은행",
-        number: "352-1234-5678-91",
-        holder: "이혜원"
       }
     ]
   },
