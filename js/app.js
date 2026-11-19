@@ -12,7 +12,7 @@ function getConfig() {
 
 function initApp() {
   renderContentFromConfig();
-  initThemeSwitcher();
+  initTheme();
   initBgm();
   initCountdownAndCalendar();
   initGallery();
@@ -25,7 +25,14 @@ function initApp() {
 }
 
 /**
- * 1. CONFIG 데이터를 페이지 요소에 반영
+ * 1. 테마 고정 (사용자 요청: 올리브 테마 고정)
+ */
+function initTheme() {
+  document.documentElement.setAttribute('data-theme', 'olive');
+}
+
+/**
+ * 2. CONFIG 데이터를 페이지 요소에 반영
  */
 function renderContentFromConfig() {
   const cfg = getConfig();
@@ -34,18 +41,22 @@ function renderContentFromConfig() {
     return;
   }
 
-  // Title & Hero
+  // 브라우저 탭 타이틀
   document.title = `${cfg.groom.name} & ${cfg.bride.name}의 모바일 청첩장`;
 
-  // Hero Names & Date
+  // Hero 커플 이름
   const heroNames = document.getElementById('heroCoupleNames');
   if (heroNames) {
     heroNames.innerHTML = `${cfg.groom.name} <span>&</span> ${cfg.bride.name}`;
   }
 
+  // Hero 일시 & 장소 (요청: 시간까지 한 줄, 아랫줄에 장소)
   const heroDateVenue = document.getElementById('heroDateVenue');
   if (heroDateVenue) {
-    heroDateVenue.textContent = `${cfg.weddingDate.year}.${String(cfg.weddingDate.month).padStart(2, '0')}.${String(cfg.weddingDate.day).padStart(2, '0')} ${cfg.weddingDate.dayOfWeek} ${cfg.weddingDate.time} | ${cfg.venue.name}`;
+    heroDateVenue.innerHTML = `
+      <span style="font-size: 14px; letter-spacing: 1px;">${cfg.weddingDate.year}.${String(cfg.weddingDate.month).padStart(2, '0')}.${String(cfg.weddingDate.day).padStart(2, '0')} ${cfg.weddingDate.dayOfWeek} ${cfg.weddingDate.time}</span>
+      <span style="font-size: 15px; font-weight: 500; color: var(--accent); letter-spacing: 2px;">${cfg.venue.name}</span>
+    `;
   }
 
   // Cover Image
@@ -80,12 +91,19 @@ function renderContentFromConfig() {
     `;
   }
 
-  // Venue Info
+  // Venue Info (요청: 더화이트베일 엔터 영어 & 4층 W홀 반영)
   const venueName = document.getElementById('venueName');
-  if (venueName) venueName.textContent = cfg.venue.name;
+  if (venueName) {
+    venueName.innerHTML = `
+      ${cfg.venue.name}<br>
+      <span style="font-size: 15px; font-weight: 400; letter-spacing: 2.5px; color: var(--text-muted); display: block; margin-top: 4px;">${cfg.venue.englishName}</span>
+    `;
+  }
 
   const venueHall = document.getElementById('venueHall');
-  if (venueHall) venueHall.textContent = cfg.venue.hall;
+  if (venueHall) {
+    venueHall.textContent = cfg.venue.hall;
+  }
 
   const venueAddress = document.getElementById('venueAddress');
   if (venueAddress) venueAddress.textContent = cfg.venue.address;
@@ -173,35 +191,6 @@ function renderAccounts(cfg) {
 }
 
 /**
- * 2. 테마 스위처 (Editorial / Olive / Navy)
- */
-function initThemeSwitcher() {
-  const themeBtns = document.querySelectorAll('.theme-btn');
-  const savedTheme = localStorage.getItem('wedding_theme') || 'editorial';
-
-  applyTheme(savedTheme);
-
-  themeBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const theme = btn.getAttribute('data-theme');
-      applyTheme(theme);
-      localStorage.setItem('wedding_theme', theme);
-    });
-  });
-
-  function applyTheme(theme) {
-    document.documentElement.setAttribute('data-theme', theme);
-    themeBtns.forEach(btn => {
-      if (btn.getAttribute('data-theme') === theme) {
-        btn.classList.add('active');
-      } else {
-        btn.classList.remove('active');
-      }
-    });
-  }
-}
-
-/**
  * 3. BGM 토글
  */
 function initBgm() {
@@ -216,7 +205,7 @@ function initBgm() {
         bgmBtn.querySelector('.bgm-label').textContent = 'BGM ON';
       } else {
         bgmBtn.classList.remove('playing');
-        bgmBtn.querySelector('.bgm-label').textContent = 'BGM OFF';
+        bgmBtn.querySelector('.bgm-label').textContent = 'BGM';
       }
     }
   });
@@ -231,14 +220,10 @@ function initCountdownAndCalendar() {
 
   const targetDate = new Date(cfg.weddingDate.isoString);
 
-  // 캘린더 헤더 렌더링
+  // 캘린더 헤더 렌더링 (요청: 2027.02 -> 2027.02.28 변경, 밑에 문구 삭제)
   const calHeaderMonth = document.getElementById('calYearMonth');
   if (calHeaderMonth) {
-    calHeaderMonth.textContent = `${cfg.weddingDate.year}.${String(cfg.weddingDate.month).padStart(2, '0')}`;
-  }
-  const calHeaderDetail = document.getElementById('calDetail');
-  if (calHeaderDetail) {
-    calHeaderDetail.textContent = `${cfg.weddingDate.month}월 ${cfg.weddingDate.day}일 ${cfg.weddingDate.dayOfWeek} ${cfg.weddingDate.time}`;
+    calHeaderMonth.textContent = `${cfg.weddingDate.year}.${String(cfg.weddingDate.month).padStart(2, '0')}.${String(cfg.weddingDate.day).padStart(2, '0')}`;
   }
 
   // 달력 테이블 렌더링
@@ -330,48 +315,117 @@ function renderCalendarTable(year, month, targetDay) {
 }
 
 /**
- * 5. 갤러리 그리드 & 풀스크린 라이트박스
+ * 5. 갤러리 (터치 슬라이더 & 모자이크 그리드 듀얼 뷰)
  */
 let currentLightboxIdx = 0;
+let currentSliderIdx = 0;
 
 function initGallery() {
   const cfg = getConfig();
   if (!cfg || !cfg.gallery) return;
 
-  const galleryGrid = document.getElementById('galleryGrid');
-  if (!galleryGrid) return;
+  const sliderContainer = document.getElementById('gallerySlides');
+  const gridContainer = document.getElementById('galleryGrid');
+  const counterEl = document.getElementById('gallerySliderCounter');
+  const btnSlider = document.getElementById('btnGallerySlider');
+  const btnGrid = document.getElementById('btnGalleryGrid');
+  const sliderWrapper = document.getElementById('gallerySliderContainer');
 
-  galleryGrid.innerHTML = '';
+  // 1. 슬라이더 렌더링
+  if (sliderContainer) {
+    sliderContainer.innerHTML = '';
+    cfg.gallery.forEach((item, index) => {
+      const slide = document.createElement('div');
+      slide.className = 'gallery-slide';
+      slide.innerHTML = `<img src="${item.opt}" alt="${item.alt}" loading="lazy" />`;
+      slide.addEventListener('click', () => openLightbox(index));
+      sliderContainer.appendChild(slide);
+    });
+  }
 
-  cfg.gallery.forEach((item, index) => {
-    const itemEl = document.createElement('div');
-    itemEl.className = `gallery-item reveal ${item.aspect === 'landscape' ? 'span-2' : ''}`;
-    itemEl.setAttribute('data-idx', index);
-
-    itemEl.innerHTML = `
-      <img src="${item.opt}" alt="${item.alt}" loading="lazy" />
-      <div class="gallery-item-overlay">
-        <div class="gallery-zoom-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            <line x1="11" y1="8" x2="11" y2="14"></line>
-            <line x1="8" y1="11" x2="14" y2="11"></line>
-          </svg>
+  // 2. 그리드 렌더링
+  if (gridContainer) {
+    gridContainer.innerHTML = '';
+    cfg.gallery.forEach((item, index) => {
+      const itemEl = document.createElement('div');
+      itemEl.className = `gallery-item ${item.aspect === 'landscape' ? 'span-2' : ''}`;
+      itemEl.innerHTML = `
+        <img src="${item.opt}" alt="${item.alt}" loading="lazy" />
+        <div class="gallery-item-overlay">
+          <div class="gallery-zoom-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              <line x1="11" y1="8" x2="11" y2="14"></line>
+              <line x1="8" y1="11" x2="14" y2="11"></line>
+            </svg>
+          </div>
         </div>
-      </div>
-    `;
+      `;
+      itemEl.addEventListener('click', () => openLightbox(index));
+      gridContainer.appendChild(itemEl);
+    });
+  }
 
-    itemEl.addEventListener('click', () => {
-      openLightbox(index);
+  // 3. 슬라이더 이동 함수
+  function goToSlide(idx) {
+    currentSliderIdx = (idx + cfg.gallery.length) % cfg.gallery.length;
+    if (sliderContainer) {
+      sliderContainer.style.transform = `translateX(-${currentSliderIdx * 100}%)`;
+    }
+    if (counterEl) {
+      counterEl.textContent = `${currentSliderIdx + 1} / ${cfg.gallery.length}`;
+    }
+  }
+
+  // 슬라이더 좌우 버튼
+  const prevBtn = document.getElementById('gallerySliderPrev');
+  const nextBtn = document.getElementById('gallerySliderNext');
+  if (prevBtn) prevBtn.addEventListener('click', () => goToSlide(currentSliderIdx - 1));
+  if (nextBtn) nextBtn.addEventListener('click', () => goToSlide(currentSliderIdx + 1));
+
+  // 슬라이더 터치 스와이프 제스처
+  if (sliderWrapper) {
+    let sStartX = 0;
+    let sEndX = 0;
+
+    sliderWrapper.addEventListener('touchstart', (e) => {
+      sStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    sliderWrapper.addEventListener('touchend', (e) => {
+      sEndX = e.changedTouches[0].screenX;
+      const diff = sEndX - sStartX;
+      if (Math.abs(diff) > 35) {
+        if (diff > 0) goToSlide(currentSliderIdx - 1);
+        else goToSlide(currentSliderIdx + 1);
+      }
+    }, { passive: true });
+  }
+
+  // 4. 모드 전환 버튼 (슬라이드 ↔ 그리드)
+  if (btnSlider && btnGrid) {
+    btnSlider.addEventListener('click', () => {
+      btnSlider.classList.add('active');
+      btnGrid.classList.remove('active');
+      if (sliderWrapper) sliderWrapper.style.display = 'block';
+      if (gridContainer) gridContainer.style.display = 'none';
     });
 
-    galleryGrid.appendChild(itemEl);
-  });
+    btnGrid.addEventListener('click', () => {
+      btnGrid.classList.add('active');
+      btnSlider.classList.remove('active');
+      if (sliderWrapper) sliderWrapper.style.display = 'none';
+      if (gridContainer) gridContainer.style.display = 'grid';
+    });
+  }
 
   initLightboxControls();
 }
 
+/**
+ * 풀스크린 라이트박스
+ */
 function openLightbox(index) {
   const cfg = getConfig();
   if (!cfg || !cfg.gallery[index]) return;
@@ -440,16 +494,12 @@ function initLightboxControls() {
 
   modal.addEventListener('touchend', (e) => {
     touchEndX = e.changedTouches[0].screenX;
-    handleSwipe();
-  }, { passive: true });
-
-  function handleSwipe() {
     const diff = touchEndX - touchStartX;
     if (Math.abs(diff) > 40) {
       if (diff > 0) prevLightbox();
       else nextLightbox();
     }
-  }
+  }, { passive: true });
 }
 
 /**
@@ -475,7 +525,7 @@ function initAccordions() {
 }
 
 /**
- * 7. 연락처 모달 (신랑, 신부, 혼주 전화/문자)
+ * 7. 연락처 모달 (요청: 부모님 제외, 신랑 진경민 & 신부 박소현 연락처만 표시)
  */
 function initContactModal() {
   const modal = document.getElementById('contactModal');
@@ -483,13 +533,13 @@ function initContactModal() {
   const closeBtn = document.getElementById('contactCloseBtn');
   const listContainer = document.getElementById('contactCardList');
 
-  if (!modal || !triggerBtn) return;
+  if (!modal || !triggerBtn || !listContainer) return;
 
   const cfg = getConfig();
 
-  // 연락처 목록 렌더링
+  // 신랑 & 신부 두 사람만 렌더링
   let html = `
-    <!-- 신랑 -->
+    <!-- 신랑 진경민 -->
     <div class="contact-card-row">
       <div class="contact-person-info">
         <span class="contact-role">신랑</span>
@@ -505,7 +555,7 @@ function initContactModal() {
       </div>
     </div>
 
-    <!-- 신부 -->
+    <!-- 신부 박소현 -->
     <div class="contact-card-row">
       <div class="contact-person-info">
         <span class="contact-role">신부</span>
@@ -516,38 +566,6 @@ function initContactModal() {
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
         </a>
         <a href="sms:${cfg.bride.phone}" class="contact-action-btn" title="문자보내기">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-        </a>
-      </div>
-    </div>
-
-    <!-- 신랑 혼주 아버지 -->
-    <div class="contact-card-row">
-      <div class="contact-person-info">
-        <span class="contact-role">신랑 아버지</span>
-        <span class="contact-name">${cfg.groom.father.name}</span>
-      </div>
-      <div class="contact-actions">
-        <a href="tel:${cfg.groom.father.phone}" class="contact-action-btn">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-        </a>
-        <a href="sms:${cfg.groom.father.phone}" class="contact-action-btn">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-        </a>
-      </div>
-    </div>
-
-    <!-- 신부 혼주 아버지 -->
-    <div class="contact-card-row">
-      <div class="contact-person-info">
-        <span class="contact-role">신부 아버지</span>
-        <span class="contact-name">${cfg.bride.father.name}</span>
-      </div>
-      <div class="contact-actions">
-        <a href="tel:${cfg.bride.father.phone}" class="contact-action-btn">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-        </a>
-        <a href="sms:${cfg.bride.father.phone}" class="contact-action-btn">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
         </a>
       </div>
@@ -616,18 +634,17 @@ function initRsvp() {
 }
 
 /**
- * 9. 방명록
+ * 9. 방명록 (요청: 경민아 수진아 -> 경민아 소현아 수정)
  */
 function initGuestbook() {
   const form = document.getElementById('guestbookForm');
   const listEl = document.getElementById('guestbookList');
   if (!form || !listEl) return;
 
-  // 기본 환영 메시지 시드
   const defaultMessages = [
     {
       name: "김민재",
-      content: "경민아 수진아 결혼 너무 축하해! 둘이 평생 행복하게 잘 살길 바라!",
+      content: "경민아 소현아 결혼 너무 축하해! 둘이 평생 행복하게 잘 살길 바라!",
       date: "2026.11.10"
     },
     {
@@ -726,7 +743,7 @@ function initShare() {
           title: `${cfg.groom.name} & ${cfg.bride.name}의 모바일 청첩장`,
           text: `저희 두 사람의 새로운 시작을 함께 축복해 주세요.`,
           url: window.location.href
-        }).catch(() => { });
+        }).catch(() => {});
       } else {
         copyToClipboard(window.location.href, '청첩장 링크가 복사되었습니다. 카카오톡이나 메시지로 공유해 보세요!');
       }
@@ -737,7 +754,7 @@ function initShare() {
 /**
  * 클립보드 복사 헬퍼 함수
  */
-window.copyToClipboard = function (text, successMsg = '복사되었습니다.') {
+window.copyToClipboard = function(text, successMsg = '복사되었습니다.') {
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text).then(() => {
       showToast(successMsg);

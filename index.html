@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" data-theme="editorial">
+<html lang="ko" data-theme="olive">
 
 <head>
   <meta charset="UTF-8">
@@ -35,15 +35,8 @@
   <!-- Main Application Wrapper -->
   <main class="app-container">
 
-    <!-- Top Floating Navigation (Theme & BGM) -->
+    <!-- Top Floating Navigation (BGM Only) -->
     <header class="top-nav">
-      <!-- 3가지 페이지시스터즈 감성 테마 스위처 -->
-      <nav class="theme-switcher" aria-label="테마 변경">
-        <button class="theme-btn active" data-theme="editorial" title="에디토리얼 크림 테마" aria-label="크림 테마">🌸</button>
-        <button class="theme-btn" data-theme="olive" title="모던 세이지 올리브 테마" aria-label="올리브 테마">🌿</button>
-        <button class="theme-btn" data-theme="navy" title="클래식 딥 네이비 테마" aria-label="네이비 테마">🕊️</button>
-      </nav>
-
       <!-- 감미로운 웨딩 BGM 플레이어 토글 -->
       <button class="bgm-btn" id="bgmBtn" aria-label="배경음악 재생/정지">
         <div class="bgm-disc">
@@ -69,7 +62,7 @@
         <div class="hero-photo-overlay"></div>
         <div class="hero-badge">
           <p class="badge-label">Forever & Always</p>
-          <p class="badge-names">Kyungmin & Sohyeon</p>
+          <p class="badge-names">Kyung-Min & So-Hyeon</p>
         </div>
       </div>
 
@@ -77,9 +70,10 @@
         <h2 class="hero-couple-names" id="heroCoupleNames">
           진경민 <span>&</span> 박소현
         </h2>
-        <p class="hero-date-venue" id="heroDateVenue">
-          2027.02.28 SUN 11:00 AM | 더화이트베일
-        </p>
+        <div class="hero-date-venue" id="heroDateVenue" style="display: flex; flex-direction: column; gap: 4px;">
+          <span style="font-size: 14px; letter-spacing: 1px;">2027.02.28 일요일 오전 11시</span>
+          <span style="font-size: 15px; font-weight: 500; color: var(--accent); letter-spacing: 2px;">더화이트베일</span>
+        </div>
 
         <div class="scroll-indicator" aria-hidden="true">
           <span>SCROLL</span>
@@ -145,9 +139,8 @@
       </div>
 
       <div class="calendar-card reveal">
-        <header class="cal-header">
-          <h3 class="cal-year-month" id="calYearMonth">2027.05</h3>
-          <p class="cal-detail" id="calDetail">5월 22일 토요일 낮 12시 30분</p>
+        <header class="cal-header" style="margin-bottom: 18px;">
+          <h3 class="cal-year-month" id="calYearMonth">2027.02.28</h3>
         </header>
 
         <!-- 달력 테이블 -->
@@ -197,16 +190,43 @@
     </section>
 
     <!-- =======================================================================
-         4. GALLERY SECTION (매거진 모자이크 & 라이트박스 갤러리)
+         4. GALLERY SECTION (슬라이더 & 그리드 갤러리)
          ======================================================================= -->
     <section class="gallery-section" id="gallery">
-      <div class="reveal">
+      <div class="reveal" style="text-align: center; margin-bottom: 24px;">
         <span class="section-tag">GALLERY</span>
-        <h2 class="section-title">우리의 가장 빛나는 순간</h2>
       </div>
 
-      <!-- 6장의 실제 사진 그리드 렌더링 영역 -->
-      <div class="gallery-grid" id="galleryGrid">
+      <!-- 갤러리 슬라이더 / 그리드 뷰 전환 버튼 -->
+      <div class="gallery-mode-toggle reveal">
+        <button class="gallery-mode-btn active" id="btnGallerySlider" type="button">
+          <span>⇄ 슬라이드</span>
+        </button>
+        <button class="gallery-mode-btn" id="btnGalleryGrid" type="button">
+          <span>⊞ 그리드</span>
+        </button>
+      </div>
+
+      <!-- 1. 화보 터치 슬라이더 (기본 노출) -->
+      <div class="gallery-slider-container reveal" id="gallerySliderContainer">
+        <div class="gallery-slides" id="gallerySlides">
+          <!-- JS로 동적 생성 -->
+        </div>
+        <button class="gallery-slider-nav-btn gallery-slider-prev" id="gallerySliderPrev" aria-label="이전 사진">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <button class="gallery-slider-nav-btn gallery-slider-next" id="gallerySliderNext" aria-label="다음 사진">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+        <div class="gallery-slider-counter" id="gallerySliderCounter">1 / 6</div>
+      </div>
+
+      <!-- 2. 매거진 모자이크 그리드 (토글 시 노출) -->
+      <div class="gallery-grid" id="galleryGrid" style="display: none;">
         <!-- JS 동적 렌더링 -->
       </div>
     </section>
@@ -221,8 +241,11 @@
       </div>
 
       <div class="venue-card reveal">
-        <h3 class="venue-name" id="venueName">더화이트베일 (THE WHITE VEIL)</h3>
-        <p class="venue-hall" id="venueHall">웨딩홀</p>
+        <h3 class="venue-name" id="venueName">
+          더화이트베일<br>
+          <span style="font-size: 15px; font-weight: 400; letter-spacing: 2.5px; color: var(--text-muted); display: block; margin-top: 4px;">THE WHITE VEIL</span>
+        </h3>
+        <p class="venue-hall" id="venueHall" style="font-size: 15px; font-weight: 500; color: var(--accent); margin-top: 6px;">4층 W홀</p>
 
         <div class="venue-address-wrapper">
           <p class="venue-address" id="venueAddress">서울특별시 서초구 서초중앙로 14</p>
@@ -245,7 +268,7 @@
                 <circle cx="12" cy="10" r="3"></circle>
               </svg>
             </div>
-            <p style="font-weight: 600; font-size: 14px; color: var(--text-main);">더화이트베일</p>
+            <p style="font-weight: 600; font-size: 14px; color: var(--text-main);">더화이트베일 4층 W홀</p>
             <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">아래 버튼을 눌러 원하시는 지도로 바로 길안내를 받으세요.</p>
           </div>
         </div>
@@ -259,58 +282,24 @@
             <span>🟢 네이버 지도</span>
           </a>
           <a href="#" id="linkTmap" class="navi-btn navi-btn-tmap">
-            <span>🔵 티맵 (T map)</span>
+            <span>🔵 티맵</span>
           </a>
         </div>
       </div>
 
-      <!-- 대중교통 및 주차 안내 카드 -->
+      <!-- 대중교통 및 주차 안내 카드 (슬림 1줄 디자인) -->
       <div class="transport-guide reveal">
-        <div class="transport-item">
-          <div class="transport-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="2" y="3" width="20" height="14" rx="2"></rect>
-              <line x1="8" y1="21" x2="16" y2="21"></line>
-              <line x1="12" y1="17" x2="12" y2="21"></line>
-            </svg>
-          </div>
-          <div class="transport-info">
-            <h4>지하철 이용 시</h4>
-            <p><strong>지하철 3호선</strong> 남부터미널역 4번 출구 (도보 2~3분)
-            </p>
-          </div>
+        <div class="transport-item-slim">
+          <span class="transport-tag">지하철</span>
+          <span class="transport-text"><strong>3호선 남부터미널역 4번 출구</strong> (도보 2분)</span>
         </div>
-
-        <div class="transport-item">
-          <div class="transport-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path
-                d="M19 17h2l.64-2.54a6 6 0 0 0-.29-4.32L19.5 5.5A2 2 0 0 0 17.65 4H6.35a2 2 0 0 0-1.85 1.5L2.65 10.14a6 6 0 0 0-.29 4.32L3 17h2">
-              </path>
-              <circle cx="7" cy="17" r="2"></circle>
-              <circle cx="17" cy="17" r="2"></circle>
-            </svg>
-          </div>
-          <div class="transport-info">
-            <h4>버스 이용 시</h4>
-            <p><strong>간선:</strong> 405, 406, 350, 461, 641 (남부터미널 하차)<br>
-              <strong>지선:</strong> 4319, 4435, 5413, 8541 (서초동예술의전당 하차)
-            </p>
-          </div>
+        <div class="transport-item-slim">
+          <span class="transport-tag">버스</span>
+          <span class="transport-text"><strong>남부터미널 / 서초동예술의전당</strong> 하차</span>
         </div>
-
-        <div class="transport-item">
-          <div class="transport-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="10"></circle>
-              <path d="M9 17V7h4a3 3 0 0 1 0 6H9"></path>
-            </svg>
-          </div>
-          <div class="transport-info">
-            <h4>자가용 / 주차 안내</h4>
-            <p>웨딩홀 맞은편 전용 주차타워 이용<br>
-              (하객 대상 <strong>무료 주차 2시간</strong> 지원, 약 600대 동시 주차 가능)</p>
-          </div>
+        <div class="transport-item-slim">
+          <span class="transport-tag">주차</span>
+          <span class="transport-text"><strong>맞은편 전용 주차타워</strong> (하객 2시간 무료 주차)</span>
         </div>
       </div>
     </section>

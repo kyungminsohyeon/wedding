@@ -6,17 +6,15 @@ const WEDDING_CONFIG = {
   // 1. 신랑 & 신부 기본 정보
   groom: {
     name: "진경민",
-    englishName: "Kyungmin Jin",
-    phone: "010-1234-5678",
+    englishName: "Kyung-Min",
+    phone: "010-3618-5479",
     relation: "장남",
     father: {
       name: "진구영",
-      phone: "010-2345-6789",
       alive: true
     },
     mother: {
       name: "이현실",
-      phone: "010-3456-7890",
       alive: true
     },
     account: {
@@ -44,17 +42,15 @@ const WEDDING_CONFIG = {
 
   bride: {
     name: "박소현",
-    englishName: "Sohyeon Park",
-    phone: "010-8765-4321",
+    englishName: "So-Hyeon",
+    phone: "010-2114-0762",
     relation: "장녀",
     father: {
       name: "박노재",
-      phone: "010-9876-5432",
       alive: true
     },
     mother: {
       name: "이혜원",
-      phone: "010-8901-2345",
       alive: true
     },
     account: {
@@ -83,17 +79,18 @@ const WEDDING_CONFIG = {
   // 2. 예식 일시 (2027.02.28 일요일 오전 11시)
   weddingDate: {
     year: 2027,
-    month: 2,        // 1 ~ 12
+    month: 2,
     day: 28,
     dayOfWeek: "일요일",
     time: "오전 11시",
-    isoString: "2027-02-28T11:00:00+09:00" // D-Day 카운트다운 기준 시각
+    isoString: "2027-02-28T11:00:00+09:00"
   },
 
-  // 3. 예식 장소 정보 (더화이트베일)
+  // 3. 예식 장소 정보 (더화이트베일 4층 W홀)
   venue: {
-    name: "더화이트베일 (THE WHITE VEIL)",
-    hall: "웨딩홀",
+    name: "더화이트베일",
+    englishName: "THE WHITE VEIL",
+    hall: "4층 W홀",
     address: "서울특별시 서초구 서초중앙로 14",
     addressDetail: "(서초동 1445-14)",
     tel: "02-3474-5000",
@@ -107,14 +104,9 @@ const WEDDING_CONFIG = {
       tmap: "tmap://search?name=더화이트베일"
     },
     transport: {
-      subway: [
-        { line: "지하철 3호선", desc: "남부터미널역 4번 출구 (도보 2~3분)" }
-      ],
-      bus: [
-        { type: "간선버스", desc: "405, 406, 350, 461, 641 (남부터미널 하차)" },
-        { type: "지선버스", desc: "4319, 4435, 5413, 8541 (서초동예술의전당 하차)" }
-      ],
-      parking: "웨딩홀 맞은편 전용 주차타워 이용 (하객 2시간 무료 주차 제공, 약 600대 동시 주차)"
+      subway: "3호선 남부터미널역 4번 출구 (도보 2분)",
+      bus: "남부터미널 / 서초동예술의전당 하차",
+      parking: "맞은편 전용 주차타워 (2시간 무료 주차, 600대 동시 주차)"
     }
   },
 
@@ -122,7 +114,8 @@ const WEDDING_CONFIG = {
   greeting: {
     title: "소중한 분들을 초대합니다",
     subtitle: "Two are better than one",
-    message: `살랑이는 바람이 머무는 계절,
+    message: `찬란한 겨울의 끝자락,
+따스한 봄을 맞이하는 길목에서
 서로 다른 길을 걸어오던 저희 두 사람이
 이제 같은 곳을 바라보며 하나의 길을 걷고자 합니다.
 
@@ -180,21 +173,8 @@ const WEDDING_CONFIG = {
     }
   ],
 
-  // 6. 대표 메인 커버 사진 지정
   coverImage: "assets/images/opt_HO_00363.jpg",
-  coverImageFull: "assets/images/HO_00363.jpg",
-
-  // 7. 추가 안내 문구
-  notices: [
-    {
-      title: "화환 안내",
-      content: "축하해주시는 따뜻한 마음만 감사히 받겠습니다. 정중히 화환은 사양하오니 혜량하여 주시기 바랍니다."
-    },
-    {
-      title: "식사 안내",
-      content: "정성껏 준비한 연회 식사는 예식 후 연회장에서 진행됩니다."
-    }
-  ]
+  coverImageFull: "assets/images/HO_00363.jpg"
 };
 
 export default WEDDING_CONFIG;
