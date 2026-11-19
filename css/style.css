@@ -395,13 +395,15 @@ section {
 .reveal {
   opacity: 0;
   transform: translateY(28px);
-  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.reveal.active {
+.reveal.active,
+.hero-section .reveal {
   opacity: 1;
   transform: translateY(0);
 }
+
 
 /* ==========================================================================
    3. INVITATION & GREETING

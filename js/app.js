@@ -6,6 +6,10 @@ document.addEventListener('DOMContentLoaded', () => {
   initApp();
 });
 
+function getConfig() {
+  return window.WEDDING_CONFIG || (typeof WEDDING_CONFIG !== 'undefined' ? WEDDING_CONFIG : null);
+}
+
 function initApp() {
   renderContentFromConfig();
   initThemeSwitcher();
@@ -24,8 +28,11 @@ function initApp() {
  * 1. CONFIG 데이터를 페이지 요소에 반영
  */
 function renderContentFromConfig() {
-  const cfg = window.WEDDING_CONFIG;
-  if (!cfg) return;
+  const cfg = getConfig();
+  if (!cfg) {
+    console.error('WEDDING_CONFIG not loaded');
+    return;
+  }
 
   // Title & Hero
   document.title = `${cfg.groom.name} & ${cfg.bride.name}의 모바일 청첩장`;
@@ -219,7 +226,7 @@ function initBgm() {
  * 4. D-Day 카운트다운 & 캘린더 생성
  */
 function initCountdownAndCalendar() {
-  const cfg = window.WEDDING_CONFIG;
+  const cfg = getConfig();
   if (!cfg) return;
 
   const targetDate = new Date(cfg.weddingDate.isoString);
@@ -328,7 +335,7 @@ function renderCalendarTable(year, month, targetDay) {
 let currentLightboxIdx = 0;
 
 function initGallery() {
-  const cfg = window.WEDDING_CONFIG;
+  const cfg = getConfig();
   if (!cfg || !cfg.gallery) return;
 
   const galleryGrid = document.getElementById('galleryGrid');
@@ -366,8 +373,8 @@ function initGallery() {
 }
 
 function openLightbox(index) {
-  const cfg = window.WEDDING_CONFIG;
-  if (!cfg.gallery[index]) return;
+  const cfg = getConfig();
+  if (!cfg || !cfg.gallery[index]) return;
 
   currentLightboxIdx = index;
   const modal = document.getElementById('lightboxModal');
@@ -388,13 +395,13 @@ function closeLightbox() {
 }
 
 function prevLightbox() {
-  const cfg = window.WEDDING_CONFIG;
+  const cfg = getConfig();
   currentLightboxIdx = (currentLightboxIdx - 1 + cfg.gallery.length) % cfg.gallery.length;
   openLightbox(currentLightboxIdx);
 }
 
 function nextLightbox() {
-  const cfg = window.WEDDING_CONFIG;
+  const cfg = getConfig();
   currentLightboxIdx = (currentLightboxIdx + 1) % cfg.gallery.length;
   openLightbox(currentLightboxIdx);
 }
@@ -478,7 +485,7 @@ function initContactModal() {
 
   if (!modal || !triggerBtn) return;
 
-  const cfg = window.WEDDING_CONFIG;
+  const cfg = getConfig();
 
   // 연락처 목록 렌더링
   let html = `
@@ -704,16 +711,19 @@ function initShare() {
 
   if (copyAddressBtn) {
     copyAddressBtn.addEventListener('click', () => {
-      const addr = window.WEDDING_CONFIG.venue.address;
+      const cfg = getConfig();
+      const addr = cfg ? cfg.venue.address : '';
       copyToClipboard(addr, '웨딩홀 주소가 복사되었습니다.');
     });
   }
 
   if (shareBtn) {
     shareBtn.addEventListener('click', () => {
+      const cfg = getConfig();
+      if (!cfg) return;
       if (navigator.share) {
         navigator.share({
-          title: `${window.WEDDING_CONFIG.groom.name} & ${window.WEDDING_CONFIG.bride.name}의 모바일 청첩장`,
+          title: `${cfg.groom.name} & ${cfg.bride.name}의 모바일 청첩장`,
           text: `저희 두 사람의 새로운 시작을 함께 축복해 주세요.`,
           url: window.location.href
         }).catch(() => {});
@@ -783,6 +793,19 @@ function showToast(message) {
 function initScrollReveal() {
   const reveals = document.querySelectorAll('.reveal');
 
+  // 첫 화면 뷰포트에 이미 들어와 있는 요소들은 즉시 활성화
+  reveals.forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight + 100) {
+      el.classList.add('active');
+    }
+  });
+
+  if (!('IntersectionObserver' in window)) {
+    reveals.forEach(el => el.classList.add('active'));
+    return;
+  }
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -790,8 +813,8 @@ function initScrollReveal() {
       }
     });
   }, {
-    threshold: 0.15,
-    rootMargin: '0px 0px -40px 0px'
+    threshold: 0.05,
+    rootMargin: '0px 0px 50px 0px'
   });
 
   reveals.forEach(el => observer.observe(el));

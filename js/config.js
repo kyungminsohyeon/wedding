@@ -201,3 +201,9 @@ const WEDDING_CONFIG = {
     }
   ]
 };
+
+// 브라우저 전역 객체(window)에 명시적 할당
+if (typeof window !== 'undefined') {
+  window.WEDDING_CONFIG = WEDDING_CONFIG;
+}
+
