@@ -6,7 +6,7 @@ export default function Guestbook({ showToast }) {
   const [guestContent, setGuestContent] = useState('');
 
   const defaultMessages = [
-    { name: "김민재", content: "경민아 수진아 결혼 너무 축하해! 둘이 평생 행복하게 잘 살길 바라!", date: "2026.11.10" },
+    { name: "김민재", content: "경민아 소현아 결혼 너무 축하해! 둘이 평생 행복하게 잘 살길 바라!", date: "2026.11.10" },
     { name: "이지원", content: "선남선녀 커플의 새로운 출발을 응원합니다. 식장에서 만나요!", date: "2026.11.12" }
   ];
 
@@ -50,22 +50,22 @@ export default function Guestbook({ showToast }) {
       <div className="guestbook-form-card reveal active">
         <form onSubmit={handleSubmit}>
           <div className="form-group" style={{ marginBottom: '12px' }}>
-            <input 
-              type="text" 
-              className="form-input" 
-              placeholder="작성자 성함" 
-              value={guestName} 
-              onChange={(e) => setGuestName(e.target.value)} 
-              required 
+            <input
+              type="text"
+              className="form-input"
+              placeholder="작성자 성함"
+              value={guestName}
+              onChange={(e) => setGuestName(e.target.value)}
+              required
             />
           </div>
           <div className="form-group" style={{ marginBottom: '14px' }}>
-            <textarea 
-              className="form-textarea" 
-              placeholder="따뜻한 축하의 메시지를 남겨주세요." 
-              value={guestContent} 
-              onChange={(e) => setGuestContent(e.target.value)} 
-              required 
+            <textarea
+              className="form-textarea"
+              placeholder="따뜻한 축하의 메시지를 남겨주세요."
+              value={guestContent}
+              onChange={(e) => setGuestContent(e.target.value)}
+              required
             />
           </div>
           <button type="submit" className="submit-btn" style={{ padding: '12px' }}>방명록 등록하기</button>

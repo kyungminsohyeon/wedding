@@ -10,14 +10,14 @@ const WEDDING_CONFIG = {
     name: "진경민",
     englishName: "Kyungmin Jin",
     phone: "010-1234-5678",
-    relation: "차남",
+    relation: "장남",
     father: {
-      name: "진태원",
+      name: "진구영",
       phone: "010-2345-6789",
       alive: true
     },
     mother: {
-      name: "김영희",
+      name: "이현실",
       phone: "010-3456-7890",
       alive: true
     },
@@ -29,96 +29,95 @@ const WEDDING_CONFIG = {
     parentAccounts: [
       {
         relation: "아버지",
-        name: "진태원",
+        name: "진구영",
         bank: "신한은행",
         number: "110-123-456789",
-        holder: "진태원"
+        holder: "진구영"
       },
       {
         relation: "어머니",
-        name: "김영희",
+        name: "이현실",
         bank: "우리은행",
         number: "1002-123-456789",
-        holder: "김영희"
+        holder: "이현실"
       }
     ]
   },
 
   bride: {
-    name: "이수진",
-    englishName: "Sujin Lee",
+    name: "박소현",
+    englishName: "Sohyeon Park",
     phone: "010-8765-4321",
     relation: "장녀",
     father: {
-      name: "이정호",
+      name: "박노재",
       phone: "010-9876-5432",
       alive: true
     },
     mother: {
-      name: "박선영",
+      name: "이혜원",
       phone: "010-8901-2345",
       alive: true
     },
     account: {
       bank: "카카오뱅크",
       number: "3333-01-9876543",
-      holder: "이수진"
+      holder: "박소현"
     },
     parentAccounts: [
       {
         relation: "아버지",
-        name: "이정호",
+        name: "박노재",
         bank: "하나은행",
         number: "220-987-654321",
-        holder: "이정호"
+        holder: "박노재"
       },
       {
         relation: "어머니",
-        name: "박선영",
+        name: "이혜원",
         bank: "농협은행",
         number: "352-1234-5678-91",
-        holder: "박선영"
+        holder: "이혜원"
       }
     ]
   },
 
-  // 2. 예식 일시
+  // 2. 예식 일시 (2027.02.28 일요일 오전 11시)
   weddingDate: {
     year: 2027,
-    month: 5,        // 1 ~ 12
-    day: 22,
-    dayOfWeek: "토요일",
-    time: "낮 12시 30분",
-    isoString: "2027-05-22T12:30:00+09:00" // D-Day 카운트다운 기준 시각
+    month: 2,        // 1 ~ 12
+    day: 28,
+    dayOfWeek: "일요일",
+    time: "오전 11시",
+    isoString: "2027-02-28T11:00:00+09:00" // D-Day 카운트다운 기준 시각
   },
 
-  // 3. 예식 장소 정보
+  // 3. 예식 장소 정보 (더화이트베일)
   venue: {
-    name: "더 라움 (THE RAUM)",
-    hall: "4F 체임버홀",
-    address: "서울특별시 강남구 언주로 564",
-    addressDetail: "(역삼동 680-1)",
-    tel: "02-538-3366",
+    name: "더화이트베일 (THE WHITE VEIL)",
+    hall: "웨딩홀",
+    address: "서울특별시 서초구 서초중앙로 14",
+    addressDetail: "(서초동 1445-14)",
+    tel: "02-3474-5000",
     coordinates: {
-      lat: 37.506520,
-      lng: 127.040180
+      lat: 37.484250,
+      lng: 127.016350
     },
     // 네비게이션 바로가기 링크 (모바일 앱 스킴 및 웹 링크 지원)
     naviLinks: {
-      kakaoMap: "https://map.kakao.com/link/to/더라움,37.506520,127.040180",
-      naverMap: "https://map.naver.com/v5/search/%EB%8D%94%EB%9D%BC%EC%9B%80",
-      tmap: "tmap://search?name=더라움"
+      kakaoMap: "https://map.kakao.com/link/to/더화이트베일,37.484250,127.016350",
+      naverMap: "https://map.naver.com/v5/search/%EB%8D%94%ED%99%94%EC%9D%B4%ED%8A%B8%EB%B2%A0%EC%9D%BC",
+      tmap: "tmap://search?name=더화이트베일"
     },
     transport: {
       subway: [
-        { line: "2호선 / 수인분당선", desc: "선릉역 5번 출구 (도보 7분)" },
-        { line: "9호선 / 수인분당선", desc: "선정릉역 4번 출구 (도보 8분)" }
+        { line: "지하철 3호선", desc: "남부터미널역 4번 출구 (도보 2~3분)" }
       ],
       bus: [
-        { type: "간선버스", desc: "141, 242, 360 (한국조폐공사 정류장 하차)" },
-        { type: "지선버스", desc: "3422, 4432 (라움아트센터 앞 하차)" }
+        { type: "간선버스", desc: "405, 406, 350, 461, 641 (남부터미널 하차)" },
+        { type: "지선버스", desc: "4319, 4435, 5413, 8541 (서초동예술의전당 하차)" }
       ],
-      parking: "라움 전용 지하 주차장 및 지상 주차장 (하객 무료 주차 2시간 30분 지원)"
+      parking: "웨딩홀 맞은편 전용 주차타워 이용 (하객 2시간 무료 주차 제공, 약 600대 동시 주차)"
     }
   },
 
@@ -139,7 +138,6 @@ const WEDDING_CONFIG = {
   },
 
   // 5. 갤러리 사진 목록
-  // 폴더에 있는 사진들을 등록했습니다.
   gallery: [
     {
       full: "assets/images/HO_00363.jpg",
@@ -197,7 +195,7 @@ const WEDDING_CONFIG = {
     },
     {
       title: "식사 안내",
-      content: "정성껏 준비한 연회 식사는 예식 후 체임버홀 연회장에서 진행됩니다."
+      content: "정성껏 준비한 연회 식사는 예식 후 연회장에서 진행됩니다."
     }
   ]
 };
@@ -206,4 +204,3 @@ const WEDDING_CONFIG = {
 if (typeof window !== 'undefined') {
   window.WEDDING_CONFIG = WEDDING_CONFIG;
 }
-

@@ -36,7 +36,7 @@ function renderContentFromConfig() {
 
   // Title & Hero
   document.title = `${cfg.groom.name} & ${cfg.bride.name}의 모바일 청첩장`;
-  
+
   // Hero Names & Date
   const heroNames = document.getElementById('heroCoupleNames');
   if (heroNames) {
@@ -267,7 +267,7 @@ function initCountdownAndCalendar() {
       if (secsEl) secsEl.textContent = String(seconds).padStart(2, '0');
 
       if (bannerEl) {
-        bannerEl.innerHTML = `경민 & 수진의 결혼식이 <strong>${days}일</strong> 남았습니다.`;
+        bannerEl.innerHTML = `${cfg.groom.name} & ${cfg.bride.name}의 결혼식이 <strong>${days}일</strong> 남았습니다.`;
       }
     } else {
       if (daysEl) daysEl.textContent = '00';
@@ -726,7 +726,7 @@ function initShare() {
           title: `${cfg.groom.name} & ${cfg.bride.name}의 모바일 청첩장`,
           text: `저희 두 사람의 새로운 시작을 함께 축복해 주세요.`,
           url: window.location.href
-        }).catch(() => {});
+        }).catch(() => { });
       } else {
         copyToClipboard(window.location.href, '청첩장 링크가 복사되었습니다. 카카오톡이나 메시지로 공유해 보세요!');
       }
@@ -737,7 +737,7 @@ function initShare() {
 /**
  * 클립보드 복사 헬퍼 함수
  */
-window.copyToClipboard = function(text, successMsg = '복사되었습니다.') {
+window.copyToClipboard = function (text, successMsg = '복사되었습니다.') {
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text).then(() => {
       showToast(successMsg);

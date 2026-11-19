@@ -72,7 +72,7 @@ const WEDDING_CONFIG = {
     ...
   },
   bride: {
-    name: "이수진",
+    name: "박소현",
     englishName: "Sujin Lee",
     phone: "010-8765-4321",
     ...
