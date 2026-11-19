@@ -352,7 +352,7 @@
     </section>
 
     <!-- =======================================================================
-         7. RSVP SECTION (참석 여부 전달)
+         7. RSVP SECTION (참석 여부 전달 - 구글 폼 웹뷰 연동)
          ======================================================================= -->
     <section class="rsvp-section" id="rsvp">
       <div class="reveal">
@@ -360,78 +360,37 @@
         <h2 class="section-title">참석 여부 전달하기</h2>
       </div>
 
-      <div class="rsvp-card reveal">
-        <p class="rsvp-desc">
+      <div class="rsvp-card reveal" style="padding: 24px 16px 20px;">
+        <p class="rsvp-desc" style="margin-bottom: 20px;">
           원활한 연회 및 예식 준비를 위해<br>
           참석 여부를 미리 알려주시면 감사하겠습니다.
         </p>
 
-        <form class="rsvp-form" id="rsvpForm">
-          <!-- 구분 선택 -->
-          <div class="form-group">
-            <label class="form-label">구분</label>
-            <div class="radio-group">
-              <label class="radio-btn-label">
-                <input type="radio" name="rsvpSide" value="신랑측" checked>
-                신랑측
-              </label>
-              <label class="radio-btn-label">
-                <input type="radio" name="rsvpSide" value="신부측">
-                신부측
-              </label>
-            </div>
-          </div>
+        <!-- 구글 폼 웹뷰 임베드 -->
+        <div class="google-form-wrapper" style="width: 100%; border-radius: var(--radius-md); overflow: hidden; background: #fff; box-shadow: var(--shadow-sm); border: 1px solid var(--border-color);">
+          <iframe 
+            src="https://docs.google.com/forms/d/1gkoix-sYNahkL5h-VgjDD9INf8h60voor0fOLe7PQXU/viewform?embedded=true" 
+            width="100%" 
+            height="620" 
+            frameborder="0" 
+            marginheight="0" 
+            marginwidth="0"
+            style="display: block; border: none; width: 100%;"
+          >
+            설문지 로드 중…
+          </iframe>
+        </div>
 
-          <!-- 참석 여부 -->
-          <div class="form-group">
-            <label class="form-label">참석 여부</label>
-            <div class="radio-group">
-              <label class="radio-btn-label">
-                <input type="radio" name="rsvpAttendance" value="참석" checked>
-                참석 가능
-              </label>
-              <label class="radio-btn-label">
-                <input type="radio" name="rsvpAttendance" value="불참">
-                마음으로 축하 (불참)
-              </label>
-            </div>
-          </div>
-
-          <!-- 참석자 성함 -->
-          <div class="form-group">
-            <label class="form-label" for="rsvpName">성함</label>
-            <input type="text" id="rsvpName" class="form-input" placeholder="참석자 성함을 입력해 주세요" required>
-          </div>
-
-          <!-- 동행 인원 -->
-          <div class="form-group">
-            <label class="form-label" for="rsvpCount">동행 인원 (본인 포함)</label>
-            <select id="rsvpCount" class="form-select">
-              <option value="1명">1명 (본인)</option>
-              <option value="2명">2명</option>
-              <option value="3명">3명</option>
-              <option value="4명 이상">4명 이상</option>
-            </select>
-          </div>
-
-          <!-- 식사 여부 -->
-          <div class="form-group">
-            <label class="form-label" for="rsvpMeal">식사 여부</label>
-            <select id="rsvpMeal" class="form-select">
-              <option value="식사 예정">식사 예정</option>
-              <option value="식사 안 함">식사 안 함</option>
-              <option value="미정">미정</option>
-            </select>
-          </div>
-
-          <!-- 전달 사항 -->
-          <div class="form-group">
-            <label class="form-label" for="rsvpMemo">전달 사항 (선택)</label>
-            <textarea id="rsvpMemo" class="form-textarea" placeholder="신랑 신부에게 전하고 싶은 한마디나 기타 사항을 적어주세요."></textarea>
-          </div>
-
-          <button type="submit" class="submit-btn">참석 정보 전달하기</button>
-        </form>
+        <div style="text-align: center; margin-top: 14px;">
+          <a 
+            href="https://docs.google.com/forms/d/1gkoix-sYNahkL5h-VgjDD9INf8h60voor0fOLe7PQXU/viewform" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            style="font-size: 12px; color: var(--accent); text-decoration: underline; letter-spacing: 0.5px;"
+          >
+            화면이 잘 보이지 않으시면 새 창으로 열기 ↗
+          </a>
+        </div>
       </div>
     </section>
 
